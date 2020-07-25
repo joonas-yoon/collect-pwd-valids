@@ -1,0 +1,11 @@
+body {
+    background-color: #fafafa;
+}
+
+.container {
+    max-width: 760px;
+}
+
+.form-group > label {
+    font-weight: bold;
+}
