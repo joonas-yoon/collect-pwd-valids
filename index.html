@@ -26,47 +26,56 @@
       </div>
 
       <!-- listed by A-Z -->
-      <form>
+      <form class="validate-type-a">
         <!-- Amazon -->
         <div class="form-group">
           <label for="pwd-amazon">Amazon</label>
-          <input type="password" class="form-control" id="pwd-amazon" placeholder="At least 6 characters">
+          <input type="password" class="form-control" id="pwd-amazon" placeholder="At least 6 characters" data-regex="^(.+){6,}$">
           <small id="help-amazon" class="form-text text-muted">
             Passwords must be at least 6 characters.
           </small>
+          <div class="invalid-feedback">
+            Invalid Password
+          </div>
         </div>
-
-        <hr>
-
+      </form>
+      <form class="validate-type-a">
         <!-- Google -->
         <div class="form-group">
           <label for="pwd-google">Google</label>
-          <input type="password" class="form-control" id="pwd-google" placeholder="8 Characters or more">
+          <input type="password" class="form-control" id="pwd-google" placeholder="8 Characters or more" data-regex="^(.+){8,}$">
           <small id="help-google" class="form-text text-muted">
             Your password must be 8 characters or more. It can be any combination of letters, numbers, and symbols (ASCII-standard characters only). Accents and accented characters aren't supported.
           </small>
+          <div class="invalid-feedback">
+            Invalid Password
+          </div>
         </div>
-
-        <hr>
-
+      </form>
+      <form class="validate-type-a">
         <!-- Reddit -->
         <div class="form-group">
           <label for="pwd-reddit">Reddit</label>
-          <input type="password" class="form-control" id="pwd-reddit" placeholder="Password must be at least 6 characters long">
+          <input type="password" class="form-control" id="pwd-reddit" placeholder="Password must be at least 6 characters long" data-regex="^(.+){6,}$">
           <small id="help-reddit" class="form-text text-muted">
             Password must be at least 6 characters long
           </small>
+          <div class="invalid-feedback">
+            Invalid Password
+          </div>
         </div>
-
-        <hr>
-
+      </form>
+      <form class="validate-type-a">
         <!-- Twitter -->
         <div class="form-group">
           <label for="pwd-twitter">Twitter</label>
-          <input type="password" class="form-control" id="pwd-twitter" placeholder="Password at least 10 characters long">
+          <input type="password" class="form-control" id="pwd-twitter" placeholder="Password at least 10 characters long" data-regex="^(.+){10,}$">
           <small id="help-twitter" class="form-text text-muted">
             Do create a password at least 10 characters long. Longer is better. Do use a mix of uppercase, lowercase, numbers, and symbols. Do use a different password for each website you visit.
           </small>
+          <div class="invalid-feedback">
+            Invalid Password
+          </div>
         </div>
       </form>
     </div>
@@ -76,5 +85,35 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+    <script>
+      (function() {
+        'use strict';
+
+        function validate(element) {
+          var rule = new RegExp(element.getAttribute('data-regex') || '(?:)');
+          if (rule.test(element.value)) {
+            element.classList.add('is-valid');
+            element.classList.remove('is-invalid');
+          } else {
+            element.classList.remove('is-valid');
+            element.classList.add('is-invalid');
+          }
+        }
+
+        window.addEventListener('load', function() {
+          // Fetch all the forms we want to apply custom Bootstrap validation styles to
+          var forms = document.getElementsByClassName('validate-type-a');
+          // Loop over them and prevent submission
+          var validation = Array.prototype.filter.call(forms, function(form) {
+            form.addEventListener('keyup', function(event) {
+              event.preventDefault();
+              event.stopPropagation();
+              validate(event.target);
+            }, false);
+          });
+        }, false);
+      })();
+      </script>
   </body>
 </html>
