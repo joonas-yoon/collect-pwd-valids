@@ -30,7 +30,7 @@
         <!-- Amazon -->
         <div class="form-group">
           <label for="pwd-amazon">Amazon</label>
-          <input type="password" class="form-control" id="pwd-amazon" placeholder="At least 6 characters" data-min="6"/>
+          <input type="password" class="form-control" id="pwd-amazon" placeholder="At least 6 characters"/>
           <small id="help-amazon" class="form-text text-muted">
             Passwords must be at least 6 characters.
           </small>
@@ -43,7 +43,7 @@
         <!-- Google -->
         <div class="form-group">
           <label for="pwd-google">Google</label>
-          <input type="password" class="form-control" id="pwd-google" placeholder="8 Characters or more" data-min="8"/>
+          <input type="password" class="form-control" id="pwd-google" placeholder="8 Characters or more"/>
           <small id="help-google" class="form-text text-muted">
             Your password must be 8 characters or more. It can be any combination of letters, numbers, and symbols (ASCII-standard characters only). Accents and accented characters aren't supported.
           </small>
@@ -56,7 +56,7 @@
         <!-- Reddit -->
         <div class="form-group">
           <label for="pwd-reddit">Reddit</label>
-          <input type="password" class="form-control" id="pwd-reddit" placeholder="Password must be at least 6 characters long" data-min="6">
+          <input type="password" class="form-control" id="pwd-reddit" placeholder="Password must be at least 6 characters long">
           <small id="help-reddit" class="form-text text-muted">
             Password must be at least 6 characters long
           </small>
@@ -69,7 +69,7 @@
         <!-- Twitter -->
         <div class="form-group">
           <label for="pwd-twitter">Twitter</label>
-          <input type="password" class="form-control" id="pwd-twitter" placeholder="Password at least 10 characters long" data-min="10">
+          <input type="password" class="form-control" id="pwd-twitter" placeholder="Password at least 10 characters long">
           <small id="help-twitter" class="form-text text-muted">
             Do create a password at least 10 characters long. Longer is better. Do use a mix of uppercase, lowercase, numbers, and symbols. Do use a different password for each website you visit.
           </small>
@@ -110,19 +110,16 @@
 
         // Validate ascii characters
         function isOnlyASCII(str) {
-            return /^[\x00-\x7F]*$/.test(str);
+            return !hasLower(str) && !hasUpper(str) && !hasNumber(str) && /^[\x00-\x7F]*$/.test(str);
+        }
+        
+        // Validate specific characters
+        function hasCustomChars(str, characters) {
+          return [...str].filter(x => !hasLower(x) && !hasUpper(x) && !hasNumber(x) && characters.indexOf(x) === -1) !== 0;
         }
 
-        // @param rules; [array of functions]
-        function validate(element, rules) {
-          var str = element.value || '';
-          var minLength = element.getAttribute('data-min') || 0;
-          var maxLength = element.getAttribute('data-max') || Infinity;
-
-          var isValidated = rules.every((rule, i) => rule(element.value));
-          isValidated &= str.length >= minLength;
-          isValidated &= str.length <= maxLength;
-
+        // Update element visually
+        function validate(element, isValidated) {
           if (isValidated) {
             element.classList.add('is-valid');
             element.classList.remove('is-invalid');
@@ -132,31 +129,49 @@
           }
         }
 
-        window.addEventListener('DOMContentLoaded', function() {
-          $('#pwd-amazon').on('keyup', function(evt){
-              evt.preventDefault();
-              evt.stopPropagation();
-              validate(evt.target, [isOnlyASCII]);
+        function _$(id) {
+          return document.getElementById(id);
+        }
+        
+        var validations = [
+          {
+            target: _$('pwd-amazon'),
+            minLength: 6,
+            rules: [isOnlyASCII]
+          },
+          {
+            target: _$('pwd-google'),
+            minLength: 8,
+            rules: [hasLower, hasNumber, hasUpper, isOnlyASCII],
+            rulesMinCount: 2
+          },
+          {
+            target: _$('pwd-reddit'),
+            minLength: 6,
+            rules: [isOnlyASCII]
+          },
+          {
+            target: _$('pwd-twitter'),
+            minLength: 10,
+            rules: [hasLower, hasNumber, hasUpper, isOnlyASCII],
+            rulesMinCount: 2
+          },
+        ];
+
+        validations.forEach((rule, idx) => {
+          rule.target.addEventListener('keyup', function(event) {
+              event.preventDefault();
+              event.stopPropagation();
+              var result = true;
+              var str = rule.target.value;
+              result &= (rule.minLength || 0) <= str.length;
+              result &= (rule.maxLength || Infinity) >= str.length;
+              var valids = rule.rules.filter((f, i) => f(str));
+              var rulesMinCount = rule.rulesMinCount || valids.length;
+              result &= rulesMinCount <= valids.length;
+              validate(rule.target, result);
           });
-          
-          $('#pwd-google').on('keyup', function(evt){
-              evt.preventDefault();
-              evt.stopPropagation();
-              validate(evt.target, [hasLower, hasNumber, hasUpper, isOnlyASCII]);
-          });
-          
-          $('#pwd-reddit').on('keyup', function(evt){
-              evt.preventDefault();
-              evt.stopPropagation();
-              validate(evt.target, [isOnlyASCII]);
-          });
-          
-          $('#pwd-twitter').on('keyup', function(evt){
-              evt.preventDefault();
-              evt.stopPropagation();
-              validate(evt.target, [hasLower, hasNumber, hasUpper, isOnlyASCII]);
-          });
-        }, false);
+        });
       })();
       </script>
   </body>
