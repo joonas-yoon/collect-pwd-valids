@@ -25,12 +25,17 @@
         </p>
       </div>
 
+      <form class="settings-form">
+        <input type="checkbox" class="form-check-input" id="show-password">
+        <label class="form-check-label" for="show-password">Show password</label>
+      </form>
+
       <!-- listed by A-Z -->
       <form class="validate-form">
         <!-- Amazon -->
         <div class="form-group">
           <label for="pwd-amazon">Amazon</label>
-          <input type="password" class="form-control" id="pwd-amazon" placeholder="At least 6 characters"/>
+          <input type="password" class="form-control form-pwd" id="pwd-amazon" placeholder="At least 6 characters"/>
           <small id="help-amazon" class="form-text text-muted">
             Passwords must be at least 6 characters.
           </small>
@@ -43,7 +48,7 @@
         <!-- Google -->
         <div class="form-group">
           <label for="pwd-google">Google</label>
-          <input type="password" class="form-control" id="pwd-google" placeholder="8 Characters or more"/>
+          <input type="password" class="form-control form-pwd" id="pwd-google" placeholder="8 Characters or more"/>
           <small id="help-google" class="form-text text-muted">
             Your password must be 8 characters or more. It can be any combination of letters, numbers, and symbols (ASCII-standard characters only). Accents and accented characters aren't supported.
           </small>
@@ -56,7 +61,7 @@
         <!-- Reddit -->
         <div class="form-group">
           <label for="pwd-reddit">Reddit</label>
-          <input type="password" class="form-control" id="pwd-reddit" placeholder="Password must be at least 6 characters long">
+          <input type="password" class="form-control form-pwd" id="pwd-reddit" placeholder="Password must be at least 6 characters long">
           <small id="help-reddit" class="form-text text-muted">
             Password must be at least 6 characters long
           </small>
@@ -69,7 +74,7 @@
         <!-- Twitter -->
         <div class="form-group">
           <label for="pwd-twitter">Twitter</label>
-          <input type="password" class="form-control" id="pwd-twitter" placeholder="Password at least 10 characters long">
+          <input type="password" class="form-control form-pwd" id="pwd-twitter" placeholder="Password at least 10 characters long">
           <small id="help-twitter" class="form-text text-muted">
             Do create a password at least 10 characters long. Longer is better. Do use a mix of uppercase, lowercase, numbers, and symbols. Do use a different password for each website you visit.
           </small>

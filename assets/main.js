@@ -1,4 +1,3 @@
-
 'use strict';
 
 (function() {
@@ -83,5 +82,10 @@
         result &= rulesMinCount <= valids.length;
         validate(rule.target, result);
     });
+  });
+
+  var showPasswordChkbox = _$('show-password');
+  showPasswordChkbox.addEventListener('click', function(event) {
+    document.querySelectorAll('.form-pwd').forEach((e, i) => e.type = e.type === 'password' ? 'text' : 'password');
   });
 })();

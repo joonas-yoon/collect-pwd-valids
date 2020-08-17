@@ -9,3 +9,15 @@ body {
 .form-group > label {
     font-weight: bold;
 }
+
+.settings-form {
+    margin-bottom: 1rem;
+}
+
+.settings-form .form-check-input {
+    margin-left: 0;
+}
+
+.settings-form .form-check-label {
+    margin-left: 1.25rem;
+}
