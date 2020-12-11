@@ -86,6 +86,7 @@
 
   var showPasswordChkbox = _$('show-password');
   showPasswordChkbox.addEventListener('click', function(event) {
+    this.querySelectorAll('svg.bi').forEach((e, i) => { e.classList.toggle('visible'); })
     document.querySelectorAll('.form-pwd').forEach((e, i) => e.type = e.type === 'password' ? 'text' : 'password');
   });
 })();
